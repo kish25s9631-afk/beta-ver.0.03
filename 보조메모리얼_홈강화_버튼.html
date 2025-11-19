@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보조 메모리얼</title>
+<style>
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    background: linear-gradient(to bottom right, #f0fff4, #e6fffa);
+    color: #1a202c;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 120px 20px;
+    text-align: center;
+  }
+  h1 { font-size: 3rem; margin-bottom: 16px; color: #22543d; }
+  h2 { font-size: 1.5rem; margin-bottom: 8px; }
+  p, li { font-size: 0.95rem; line-height: 1.5; }
+  .hidden { display: none; }
+  .card {
+    background: #ffffffcc;
+    border: 1px solid #d1fae5;
+    border-radius: 1rem;
+    padding: 16px;
+    margin: 12px 0;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  nav {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #c6f6d5;
+    border-radius: 2rem;
+    padding: 10px 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 600px;
+  }
+  button {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 14px 0;
+    border-radius: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  button.active {
+    background-color: #c6f6d5;
+    color: #22543d;
+    box-shadow: 0 0 0 3px #9ae6b4;
+  }
+  .home-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #e6fffa;
+    border: 1px solid #9ae6b4;
+    color: #22543d;
+    padding: 6px 12px;
+    border-radius: 1rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .home-btn:hover {
+    background: #c6f6d5;
+  }
+  .home-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- 홈 화면 -->
+<main id="home">
+  <div class="home-icon">🏡</div>
+  <h1>보조 메모리얼</h1>
+  <p>📋 스케줄표, 🧭 상황 대처, 🚨 긴급 상황 정보를 빠르게 확인하세요.</p>
+  <div class="card">오늘의 일정과 긴급 연락처를 빠르게 확인할 수 있습니다.</div>
+  <div class="card">각 상황에 맞는 대응 가이드를 제공합니다.</div>
+  <div class="card">하단 버튼으로 원하는 화면으로 빠르게 이동할 수 있습니다.</div>
+</main>
+
+<!-- 스케줄표 -->
+<main id="schedule" class="hidden">
+  <button class="home-btn" onclick="show('home')">🏡 홈</button>
+  <h2>📅 스케줄표</h2>
+  <p>일정을 빠르게 확인할 수 있습니다.</p>
+  <div class="card">오늘: —</div>
+  <div class="card">다음 일정: —</div>
+</main>
+
+<!-- 상황 대처 -->
+<main id="response" class="hidden">
+  <button class="home-btn" onclick="show('home')">🏡 홈</button>
+  <h2>🧭 상황 대처</h2>
+  <ul>
+    <li>문제가 발생하면 먼저 안전을 확보하세요.</li>
+    <li>필요 시 관계자(관리사무소 등)에 연락하세요.</li>
+  </ul>
+</main>
+
+<!-- 긴급 상황 -->
+<main id="emergency" class="hidden">
+  <button class="home-btn" onclick="show('home')">🏡 홈</button>
+  <h2>🚨 긴급 상황</h2>
+  <div class="card"><strong>응급의료 (119):</strong> 즉시 신고하세요.</div>
+  <div class="card"><strong>관리사무소:</strong> 연락처 확인.</div>
+</main>
+
+<!-- 하단 버튼 -->
+<nav>
+  <button id="btnSchedule">📅 스케줄표</button>
+  <button id="btnResponse">🧭 상황 대처</button>
+  <button id="btnEmergency">🚨 긴급 상황</button>
+</nav>
+
+<script>
+  const pages = ['home', 'schedule', 'response', 'emergency'];
+  const buttons = {
+    schedule: document.getElementById('btnSchedule'),
+    response: document.getElementById('btnResponse'),
+    emergency: document.getElementById('btnEmergency')
+  };
+
+  function show(page) {
+    pages.forEach(id => {
+      document.getElementById(id).classList.toggle('hidden', id !== page);
+    });
+    Object.keys(buttons).forEach(key => {
+      buttons[key].classList.toggle('active', key === page);
+    });
+  }
+
+  buttons.schedule.onclick = () => show('schedule');
+  buttons.response.onclick = () => show('response');
+  buttons.emergency.onclick = () => show('emergency');
+</script>
+
+</body>
+</html>
